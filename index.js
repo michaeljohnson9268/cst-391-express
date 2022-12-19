@@ -1,3 +1,4 @@
+const { v4: uuidv4 } = require('uuid');
 const express = require('express')
 const app = express()
 const port = 3000
@@ -5,16 +6,16 @@ var mysql = require('mysql')
 const bp = require('body-parser')
 
 var connection = mysql.createConnection({
-    host: '127.0.0.1',
-    port:'8889',
-    user: 'root',
-    password: 'root',
-    database: 'clc-391'
+    host: 'eyvqcfxf5reja3nv.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
+    port:'3306',
+    user: 'f1exeydbhv5u1x2i',
+    password: 'yeevk45rotfza7h8',
+    database: 'ipndh90hwjpno323'
   })
 
 connection.connect();
 
-var sqlInsert = `INSERT INTO Postmortems 
+var sqlInsert = `INSERT INTO postmortems 
             (
                 id, name, subName, team, cause
             )
@@ -22,7 +23,7 @@ var sqlInsert = `INSERT INTO Postmortems
             (
                 ?, ?, ?, ?, ?
             )`;
-var sqlUpdate = `UPDATE Postmortems SET name=?,subName=?,team=?,cause=? WHERE id = ?`;
+var sqlUpdate = `UPDATE postmortems SET name=?,subName=?,team=?,cause=? WHERE id = ?`;
 var sqlDelete = `DELETE FROM Postmortems WHERE id=?`;
 
 
@@ -39,7 +40,7 @@ app.use(function (req, res, next) {
 app.get('/postmortems', function (req, res)
 {
     var pmList = []
-    connection.query('SELECT * FROM `Postmortems`', function (error, results, fields) {
+    connection.query('SELECT * FROM `postmortems`', function (error, results, fields) {
         // error will be an Error if one occurred during the query
         // results will contain the results of the query
         // fields will contain information about the returned results fields (if any)
@@ -52,7 +53,9 @@ app.get('/postmortems', function (req, res)
 })
 app.post('/create', function(req, res){
     console.log(req.body);
-    connection.query(sqlInsert, [0,req.body.name , req.body.subName, req.body.team, req.body.cause], function (err, data) {
+    let id = uuidv4()
+    console.log(id)
+    connection.query(sqlInsert, [id,req.body.name , req.body.subName, req.body.team, req.body.cause], function (err, data) {
         if (err) {
             console.log(err)
         } else {
