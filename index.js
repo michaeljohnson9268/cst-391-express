@@ -1,10 +1,13 @@
+//creates the ids for the database using UUID
 const { v4: uuidv4 } = require('uuid');
+const port = 3000;
+//setting up expresss
 const express = require('express')
 const app = express()
-const port = 3000
+//sets up sql and body parser
 var mysql = require('mysql')
 const bp = require('body-parser')
-
+//creates a database connect
 var connection = mysql.createConnection({
     host: 'wcwimj6zu5aaddlj.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
     port:'3306',
@@ -13,8 +16,11 @@ var connection = mysql.createConnection({
     database: 'mckrempm098x6ju2'
   })
 
+//this connects to the database
 connection.connect();
 
+
+//these are strings used in our queries
 var sqlInsert = `INSERT INTO postmortems 
             (
                 id, name, subName, team, cause
@@ -26,9 +32,11 @@ var sqlInsert = `INSERT INTO postmortems
 var sqlUpdate = `UPDATE postmortems SET name=?,subName=?,team=?,cause=? WHERE id = ?`;
 var sqlDelete = `DELETE FROM Postmortems WHERE id=?`;
 
-
+//setting the body parser
 app.use(bp.json())
 app.use(bp.urlencoded({ extended: true }))
+
+//sets up cors
 app.use(function (req, res, next) {
     // Enabling CORS
     res.header("Access-Control-Allow-Origin", "*");
@@ -36,14 +44,13 @@ app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, x-client-key, x-client-token, x-client-secret, Authorization");
     next();
    });
-
+//basic function for getting the postmortems
 app.get('/postmortems', function (req, res)
 {
+    //makes a blank list
     var pmList = []
     connection.query('SELECT * FROM `postmortems`', function (error, results, fields) {
-        // error will be an Error if one occurred during the query
-        // results will contain the results of the query
-        // fields will contain information about the returned results fields (if any)
+        // for each resut is adds to the list
         results.forEach(pm => {
             pmList.push(pm)
         });
@@ -87,5 +94,5 @@ app.delete('/delete/:id', function(req, res){
     
     
 });
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
 
+app.listen(process.env.PORT || port, () => console.log(`Example app listening on port ${port}!`))
