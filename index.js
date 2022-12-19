@@ -6,11 +6,11 @@ var mysql = require('mysql')
 const bp = require('body-parser')
 
 var connection = mysql.createConnection({
-    host: 'eyvqcfxf5reja3nv.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
+    host: 'wcwimj6zu5aaddlj.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
     port:'3306',
-    user: 'f1exeydbhv5u1x2i',
-    password: 'yeevk45rotfza7h8',
-    database: 'ipndh90hwjpno323'
+    user: 'pn8k76r54wn68fgz',
+    password: 'la0ugv974kp1eotf',
+    database: 'mckrempm098x6ju2'
   })
 
 connection.connect();
